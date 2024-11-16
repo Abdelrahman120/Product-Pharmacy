@@ -84,7 +84,7 @@ DB_DATABASE=your_database_name
 DB_USERNAME=your_database_username
 DB_PASSWORD=your_database_password
 )Make sure to adjust the paths, database name, and user credentials in the .env file according to your environment.
-Move the file 2024_11_14_212639_create_pharmacy_product_table.php from the migrations folder ,Move it to another folder temporarily.
+Move the file 2024_11_14_212639_create_pharmacy_product_table.php and 2024_11_15_122349_add_price_to_pharmacy_product_table.php from the migrations folder ,Move it to another folder temporarily (backup folder i made it).
 php artisan migrate
 Move the 2024_11_14_212639_create_pharmacy_product_table.php file back to the migrations folder.
 php artisan migrate
