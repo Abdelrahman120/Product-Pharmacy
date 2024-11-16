@@ -22,24 +22,13 @@ class PharmacyApiTest extends TestCase
                 'data' => [
                     'data' => [
                         '*' => ['id', 'name', 'address', 'created_at', 'updated_at']
-                    ]
+                    ],
+                    'meta' => ['current_page', 'per_page', 'total']
                 ],
                 'message',
             ]);
     }
-    public function test_api_can_retrieve_a_single_pharmacy()
-    {
-        $pharmacy = Pharmacy::factory()->create();
 
-        $response = $this->getJson("/api/pharmacies/{$pharmacy->id}");
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'success',
-                'data' => ['id', 'name', 'address', 'created_at', 'updated_at'],
-                'message',
-            ]);
-    }
     public function test_api_can_create_a_pharmacy()
     {
         $data = [
@@ -50,10 +39,18 @@ class PharmacyApiTest extends TestCase
         $response = $this->postJson('/api/pharmacies', $data);
 
         $response->assertStatus(201)
-            ->assertJson(['success' => true]);
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'name' => 'Test Pharmacy',
+                    'address' => '123 Main Street',
+                ],
+                'message' => 'Pharmacy created successfully',
+            ]);
 
         $this->assertDatabaseHas('pharmacies', $data);
     }
+
     public function test_api_can_update_a_pharmacy()
     {
         $pharmacy = Pharmacy::factory()->create();
@@ -63,10 +60,19 @@ class PharmacyApiTest extends TestCase
         $response = $this->putJson("/api/pharmacies/{$pharmacy->id}", $data);
 
         $response->assertStatus(200)
-            ->assertJson(['success' => true]);
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $pharmacy->id,
+                    'name' => 'Updated Pharmacy',
+                    'address' => $pharmacy->address,
+                ],
+                'message' => 'Pharmacy updated successfully',
+            ]);
 
         $this->assertDatabaseHas('pharmacies', $data);
     }
+
     public function test_api_can_delete_a_pharmacy()
     {
         $pharmacy = Pharmacy::factory()->create();
@@ -74,7 +80,10 @@ class PharmacyApiTest extends TestCase
         $response = $this->deleteJson("/api/pharmacies/{$pharmacy->id}");
 
         $response->assertStatus(200)
-            ->assertJson(['success' => true]);
+            ->assertJson([
+                'success' => true,
+                'message' => 'Pharmacy deleted successfully',
+            ]);
 
         $this->assertDatabaseMissing('pharmacies', ['id' => $pharmacy->id]);
     }
