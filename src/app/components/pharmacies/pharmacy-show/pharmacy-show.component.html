@@ -1,0 +1,16 @@
+<div class="container mt-4">
+    <h2>Pharmacy Details</h2>
+    
+    <div *ngIf="pharmacy">
+      <p><strong>Name:</strong> {{ pharmacy.name }}</p>
+      <p><strong>Address:</strong> {{ pharmacy.address }}</p>
+    </div>
+    
+    <div *ngIf="!pharmacy">
+      <p>Loading...</p>
+    </div>
+    <div>
+      <button class="btn btn-secondary mt-3" (click)="goBack()">Back</button>
+    </div>
+  </div>
+  

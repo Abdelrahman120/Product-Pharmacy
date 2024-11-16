@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Add New Product</h2>
+  <form (ngSubmit)="addProduct()" novalidate>
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        [(ngModel)]="title"
+        name="title"
+        required
+        placeholder="Enter product title"
+      />
+      <div *ngIf="!title && submitted" class="text-danger">Title is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        id="description"
+        class="form-control"
+        [(ngModel)]="description"
+        name="description"
+        required
+        placeholder="Enter product description"
+      ></textarea>
+      <div *ngIf="!description && submitted" class="text-danger">Description is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input
+        type="number"
+        id="price"
+        class="form-control"
+        [(ngModel)]="price"
+        name="price"
+        required
+        placeholder="Enter product price"
+        min="0"
+      />
+      <div *ngIf="!price && submitted" class="text-danger">Price is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input
+        type="number"
+        id="quantity"
+        class="form-control"
+        [(ngModel)]="quantity"
+        name="quantity"
+        required
+        placeholder="Enter product quantity"
+        min="0"
+      />
+      <div *ngIf="!quantity && submitted" class="text-danger">Quantity is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Product Image</label>
+      <input
+        type="file"
+        id="image"
+        class="form-control"
+        (change)="onFileChange($event)"
+        accept="image/*"
+      />
+      <div *ngIf="image && image.name" class="mt-2">
+        <p><strong>Selected Image: </strong>{{ image.name }}</p>
+      </div>
+      <div *ngIf="image && !image.name" class="text-danger">Image is required</div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn btn-success me-2"
+        [disabled]="!isValid()"
+      >
+        Save
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
