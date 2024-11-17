@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
 })
 export class DetailsComponent implements OnInit {
-  product: any;
+  product: any; 
+  pharmacies: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -24,7 +25,8 @@ export class DetailsComponent implements OnInit {
     if (id) {
       this.productService.getProductById(+id).subscribe(
         (data) => {
-          this.product = data.data; 
+          this.product = data.data.product;
+          this.pharmacies = data.data.pharmacies; 
         },
         (error) => {
           console.error('Error fetching product details:', error);
