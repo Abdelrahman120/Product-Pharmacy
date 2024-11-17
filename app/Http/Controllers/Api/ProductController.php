@@ -59,20 +59,29 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('pharmacies')->find($id);
-
-        if (!$product) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product not found',
-            ], 404);
-        }
-
+        $product = Product::with(['pharmacies' => function ($query) {
+            $query->select('pharmacies.id', 'pharmacies.name', 'pharmacies.address', 'pharmacy_product.price');
+        }])->findOrFail($id);
+    
         return response()->json([
             'success' => true,
-            'message' => 'Product retrieved successfully',
-            'data' => $product,
-        ], 200);
+            'data' => [
+                'product' => [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'description' => $product->description,
+                    'image' => $product->image ? asset('storage/' . $product->image) : null,
+                ],
+                'pharmacies' => $product->pharmacies->map(function ($pharmacy) {
+                    return [
+                        'id' => $pharmacy->id,
+                        'name' => $pharmacy->name,
+                        'address' => $pharmacy->address,
+                        'price' => $pharmacy->pivot->price,
+                    ];
+                }),
+            ],
+        ]);
     }
 
     /**
